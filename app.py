@@ -64,17 +64,19 @@ st.markdown("مرحباً بك في تطبيقك المصنوع بـ **Python & 
 # جلب الطقس وعرضه في الشريط الجانبي (Sidebar)
 with st.sidebar:
     st.header("🌤️ حالة الطقس")
-    city = st.text_input("اسم المدينة", "Cairo")
-    try:
-        url = f"https://wttr.in/{city}?format=3&lang=ar"
-        res = requests.get(url, timeout=3)
-        if res.status_code == 200:
-            st.success(res.text.strip())
-        else:
-            st.warning("تعذر جلب الطقس.")
-    except:
-        st.error("مشكلة في الاتصال بالإنترنت.")
+    city = st.text_input("اسم المدينة (بالإنجليزية مثل Cairo)", "Cairo")
     
+    if st.button("عرض الطقس"):
+        try:
+            url = f"https://wttr.in/{city}?format=%C+%t&lang=ar"
+            res = requests.get(url, timeout=5)
+            if res.status_code == 200:
+                st.success(f"الطقس في {city}: {res.text.strip()}")
+            else:
+                st.warning("تعذر جلب الطقس، تأكد من اسم المدينة.")
+        except:
+            st.error("مشكلة في الاتصال بالإنترنت.")
+            
     st.markdown("---")
     st.info("💡 هذا التطبيق يعمل كـ موقع ويب محلي على جهازك.")
 
